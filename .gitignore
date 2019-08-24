@@ -1,0 +1,13 @@
+.next 
+node_modules
+log
+dist
+package-lock.json
+node_modules
+server/generated_files
+credentials
+.idea
+.vscode
+*.log
+.env*
+LivingPlay.taskpaper
