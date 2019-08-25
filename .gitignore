@@ -1,6 +1,7 @@
 .next 
 node_modules
 log
+coverage
 dist
 package-lock.json
 node_modules
@@ -10,4 +11,4 @@ credentials
 .vscode
 *.log
 .env*
-LivingPlay.taskpaper
+todo.taskpaper

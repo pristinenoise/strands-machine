@@ -1,2 +1,4 @@
 src/types/*.d.ts
 **/node_modules
+.eslintrc.js
+jest.config.js

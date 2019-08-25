@@ -3,5 +3,6 @@ interface User {
 }
 
 const sayHello = (user: User): string => `Hello ${user.name}!`;
+sayHello;
 
 export default sayHello;

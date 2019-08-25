@@ -1,7 +1,7 @@
 {
-  "name": "strands-machine",
+  "name": "strandweaver-machine",
   "version": "0.1.0",
-  "description": "interpreter for strands structured text games",
+  "description": "interpreter for strandweaver structured text games",
   "author": "James Stuart",
   "main": "dist/index.js",
   "type": "commonjs",
@@ -19,7 +19,6 @@
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
       "eslint --fix",
-      "jest --coverage --findRelatedTests",
       "git add"
     ]
   },
@@ -34,7 +33,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "husky": "^3.0.4",
     "jest": "^24.9.0",
-    "lint-staged": "^9.2.3",
+    "lint-staged": "^9.2.4",
     "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",

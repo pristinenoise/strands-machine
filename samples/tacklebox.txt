@@ -1,0 +1,10 @@
+% block: Intro
+
+Tacklebox by J. Walton
+A game for 1-10 pairs of people.
+
+
+% block: Premise
+This is the truth.
+
+You are just a pair of friends, lovers, or family members, out in a small boat together, fishing.
