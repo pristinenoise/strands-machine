@@ -14,7 +14,7 @@ interface Transition {
   target: string;
 }
 
-export default class Script {
+export default class ScriptBuilder {
   startingBlock: string | null;
   blocks: BlockIndex;
 
@@ -25,13 +25,5 @@ export default class Script {
 
   getBlock(name: string): Block {
     return this.blocks[name];
-  }
-
-  getStartingBlock(): Block | null {
-    if (this.startingBlock) {
-      return this.blocks[this.startingBlock];
-    } else {
-      return null;
-    }
   }
 }

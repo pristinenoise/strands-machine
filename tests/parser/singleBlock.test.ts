@@ -1,10 +1,12 @@
-import Script from "@App/Script";
 import TextParser from "@App/parsers/TextParser";
 
 test("a simple script parses", () => {
-  const rawScript = `beep boop`;
-  const parser: TextParser = new TextParser(rawScript);
-  const script: Script = parser.getScript();
+  const rawScript = `
+    % block: robot
 
-  expect(script.getStartingBlock()).toBe("xxx");
+    beep boop
+  `;
+  const parser: TextParser = new TextParser(rawScript);
+
+  expect(parser.scriptBuilder.getBlock("robot")).toMatch(/beep boop/);
 });
