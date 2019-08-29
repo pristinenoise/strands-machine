@@ -1,11 +1,12 @@
 export interface Block {
-  startingLine: number;
   name: string;
+  data: string;
   transitions: Array<Transition>;
 }
 
 export interface Transition {
   text: string;
   visible: boolean;
-  target: string;
+  targetType: string;
+  targetName: string;
 }

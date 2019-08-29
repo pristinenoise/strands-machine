@@ -2,7 +2,6 @@ import ScriptBuilder from "./ScriptBuilder";
 import { isCommandHeader, parseCommandHeader } from "./parseCommandHeader";
 
 import * as parsers from "./parsers";
-import { isCompletionStatement } from "@babel/types";
 
 const commentRe = /^\s*\/\//;
 
@@ -20,10 +19,15 @@ export default class TextParser {
     this.scriptBuilder = new ScriptBuilder();
     this.commands = [];
     this.parseIntoCommands();
-    // this.makeScript();
+    this.makeScript();
   }
 
-  // private makeScript(): void {}
+  private makeScript(): void {
+    this.commands.forEach(command => {
+      this.scriptBuilder.addCommand(command);
+    });
+    this.scriptBuilder.wireDefaultTransitions();
+  }
 
   private parseIntoCommands(): void {
     let activeLine = 0;
