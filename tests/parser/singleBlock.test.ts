@@ -12,4 +12,5 @@ test("a simple script parses", () => {
   const firstCommand = parser.commands[0];
   expect(firstCommand.type).toBe("block");
   expect(firstCommand.params["name"]).toBe("robot");
+  expect(firstCommand.data).toMatch(/beep boop/);
 });
