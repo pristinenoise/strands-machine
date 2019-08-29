@@ -2,6 +2,9 @@ import ScriptBuilder from "./ScriptBuilder";
 import { isCommandHeader, parseCommandHeader } from "./parseCommandHeader";
 
 import * as parsers from "./parsers";
+import { isCompletionStatement } from "@babel/types";
+
+const commentRe = /^\s*\/\//;
 
 export default class TextParser {
   static readonly commentRegex = /^\/\//;
@@ -57,6 +60,8 @@ export default class TextParser {
 
         command.type = header.type;
         command.params = header.params;
+
+        break;
       }
     }
 
@@ -64,18 +69,23 @@ export default class TextParser {
       return null;
     }
 
+    const lines: Array<string> = [];
     for (let i = command.startLine + 1; i < this._numberLines; i++) {
       const line = this._lines[i];
       if (isCommandHeader(line)) {
         command.endLine = i - 1;
         break;
+      } else if (!this.isComment(line)) {
+        lines.push(line);
       }
     }
 
-    command.data = this._lines
-      .slice(command.startLine, command.endLine)
-      .join("\n");
+    command.data = lines.join("\n");
 
     return command;
+  }
+
+  private isComment(line: string): boolean {
+    return commentRe.test(line);
   }
 }
