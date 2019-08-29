@@ -1,5 +1,5 @@
 import TextParser from "@App/parsers/TextParser";
-import * as script from "@App/parsers/script";
+import * as script from "@App/script/script";
 
 describe("given a one block script", () => {
   const text = `
@@ -21,7 +21,7 @@ describe("given a one block script", () => {
   });
 
   describe("the first block", () => {
-    const sb = parser.scriptBuilder;
+    const sb = parser.script;
     const robotBlock = sb.getBlock("robot");
 
     it("parses correctly", () => {
@@ -36,7 +36,7 @@ describe("given a one block script", () => {
   });
 
   it("adds a default transition to the end", () => {
-    const sb = parser.scriptBuilder;
+    const sb = parser.script;
     const robotBlock = sb.getBlock("robot");
 
     expect(robotBlock.transitions.length).toBe(1);
@@ -57,7 +57,7 @@ describe("a multi block script", () => {
     i am human
   `;
   const parser: TextParser = new TextParser(text);
-  const sb = parser.scriptBuilder;
+  const sb = parser.script;
 
   it("parses into 2 commands", () => {
     expect(parser.commands.length).toBe(2);

@@ -1,4 +1,4 @@
-import ScriptBuilder from "./ScriptBuilder";
+import Script from "../script/Script";
 import { isCommandHeader, parseCommandHeader } from "./parseCommandHeader";
 
 import * as parsers from "./parsers";
@@ -8,7 +8,7 @@ const commentRe = /^\s*\/\//;
 export default class TextParser {
   static readonly commentRegex = /^\/\//;
 
-  scriptBuilder: ScriptBuilder;
+  script: Script;
   private _lines: Array<string>;
   private _numberLines: number;
   commands: Array<parsers.Command>;
@@ -16,7 +16,7 @@ export default class TextParser {
   constructor(rawInput: string) {
     this._lines = rawInput.match(/[^\r\n]+/g) || [];
     this._numberLines = this._lines.length;
-    this.scriptBuilder = new ScriptBuilder();
+    this.script = new Script();
     this.commands = [];
     this.parseIntoCommands();
     this.makeScript();
@@ -24,9 +24,9 @@ export default class TextParser {
 
   private makeScript(): void {
     this.commands.forEach(command => {
-      this.scriptBuilder.addCommand(command);
+      this.script.addCommand(command);
     });
-    this.scriptBuilder.wireDefaultTransitions();
+    this.script.wireDefaultTransitions();
   }
 
   private parseIntoCommands(): void {

@@ -1,7 +1,7 @@
 import * as script from "./script.d";
-import * as parsers from "./parsers.d";
+import * as parsers from "../parsers/parsers";
 
-export default class ScriptBuilder {
+export default class Script {
   startingBlock: string | null;
   blocks: { [name: string]: script.Block };
   blockOrder: Array<string>;
