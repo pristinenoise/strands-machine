@@ -2,11 +2,14 @@ import TextParser from "@App/parsers/TextParser";
 
 test("a simple script parses", () => {
   const rawScript = `
-    % block: robot
+    % block name="robot"
 
     beep boop
   `;
   const parser: TextParser = new TextParser(rawScript);
+  expect(parser.commands.length).toBe(1);
 
-  expect(parser.scriptBuilder.getBlock("robot")).toMatch(/beep boop/);
+  const firstCommand = parser.commands[0];
+  expect(firstCommand.type).toBe("block");
+  expect(firstCommand.params["name"]).toBe("robot");
 });
