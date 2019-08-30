@@ -1,4 +1,4 @@
-import * as parsers from "../parsers/parsers";
+import { Command } from "@App/parsers/TextParser";
 
 export interface Block {
   name: string;
@@ -52,7 +52,7 @@ export default class Script {
     return response;
   }
 
-  addCommand(command: parsers.Command): void {
+  addCommand(command: Command): void {
     if (command.type == "block") {
       this.addBlock(command);
     } else {
@@ -60,7 +60,7 @@ export default class Script {
     }
   }
 
-  private addBlock(command: parsers.Command): void {
+  private addBlock(command: Command): void {
     const name: string =
       command.params["name"] || `unnamed_block_${this.blockOrder.length}`;
 

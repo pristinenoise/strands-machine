@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "declarationMap": true,
+        "inlineSourceMap": true,
+        "inlineSources": true,
+        "baseUrl": ".",
+        "paths": {
+            "@App/*": [
+                "src/*"
+            ]
+        }
+    },
+    "exclude": [
+        "tests",
+        "node_modules"
+    ]
+}
