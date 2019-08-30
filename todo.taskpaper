@@ -4,7 +4,8 @@ strandweaver-machine:
 		Set up basic parsing and text features:
 			- move away from typescript @started(19-08-24 20:08) @done
 			- get the start and end of a block @done
-			- change scriptbuilder to script
+			- change scriptbuilder to script @done
+			- add quick validation @done
 			- fix quick fix stuff
 			- handle a single block properly
 	Ideas:

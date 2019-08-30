@@ -12,6 +12,22 @@ export default class Script {
     this.blockOrder = [];
   }
 
+  checkValidity(): script.ValidationResponse {
+    const response: script.ValidationResponse = {
+      valid: true,
+      errors: [],
+    };
+
+    if (this.blockOrder.length == 0) {
+      response.valid = false;
+      response.errors.push({
+        type: "NoBlocksFound",
+        message: "A script must have at least one block.",
+      });
+    }
+    return response;
+  }
+
   addCommand(command: parsers.Command): void {
     if (command.type == "block") {
       this.addBlock(command);
@@ -54,7 +70,6 @@ export default class Script {
             text: "The End",
             visible: true,
             targetType: "end",
-            targetName: "end",
           };
           block.transitions.push(endTransition);
         } else {
