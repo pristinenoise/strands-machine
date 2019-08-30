@@ -1,7 +1,17 @@
 import Script from "../script/Script";
-import { isCommandHeader, parseCommandHeader } from "./parseCommandHeader";
+import {
+  CommandHeader,
+  isCommandHeader,
+  parseCommandHeader,
+} from "./parseCommandHeader";
 
-import * as parsers from "./parsers";
+export interface Command {
+  type: string;
+  params: { [name: string]: string };
+  startLine: number;
+  endLine: number;
+  data: string;
+}
 
 const commentRe = /^\s*\/\//;
 
@@ -11,7 +21,7 @@ export default class TextParser {
   script: Script;
   private _lines: Array<string>;
   private _numberLines: number;
-  commands: Array<parsers.Command>;
+  commands: Array<Command>;
 
   constructor(rawInput: string) {
     this._lines = rawInput.match(/[^\r\n]+/g) || [];
@@ -32,7 +42,7 @@ export default class TextParser {
   private parseIntoCommands(): void {
     let activeLine = 0;
     do {
-      const command: parsers.Command | null = this.parseNextCommand(activeLine);
+      const command: Command | null = this.parseNextCommand(activeLine);
       if (command == null) {
         break;
       }
@@ -43,8 +53,8 @@ export default class TextParser {
     } while (activeLine < this._numberLines);
   }
 
-  private parseNextCommand(earliestLine: number): parsers.Command | null {
-    const command: parsers.Command = {
+  private parseNextCommand(earliestLine: number): Command | null {
+    const command: Command = {
       type: "unknown",
       params: {},
       startLine: earliestLine,
@@ -60,7 +70,7 @@ export default class TextParser {
       if (isCommandHeader(line)) {
         command.startLine = i;
         commandFound = true;
-        const header: parsers.CommandHeader = parseCommandHeader(line);
+        const header: CommandHeader = parseCommandHeader(line);
 
         command.type = header.type;
         command.params = header.params;

@@ -1,5 +1,5 @@
-import * as parsers from "@App/parsers/parsers.d";
 import {
+  CommandHeader,
   isCommandHeader,
   parseCommandHeader,
 } from "@App/parsers/parseCommandHeader";
@@ -22,7 +22,7 @@ test("it can parse a command type with no attributes", () => {
 
 test("it can parse multiple attributes", () => {
   const line = "% block name='xxx' id='abc'";
-  const res: parsers.CommandHeader = parseCommandHeader(line);
+  const res: CommandHeader = parseCommandHeader(line);
   expect(res.type).toBe("block");
   expect(res.params["name"]).toBe("xxx");
   expect(res.params["id"]).toBe("abc");
