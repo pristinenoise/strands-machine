@@ -1,9 +1,33 @@
-import * as script from "./script.d";
 import * as parsers from "../parsers/parsers";
+
+export interface Block {
+  name: string;
+  data: string;
+  transitions: Array<Transition>;
+}
+
+export interface Transition {
+  text: string;
+  visible: boolean;
+  targetType: string;
+  targetName?: string;
+}
+
+export interface ValidationResponse {
+  valid: boolean;
+  errors: Array<ValidationError>;
+}
+
+export interface ValidationError {
+  type: string;
+  message: string;
+  startLine?: number;
+  endLine?: number;
+}
 
 export default class Script {
   startingBlock: string | null;
-  blocks: { [name: string]: script.Block };
+  blocks: { [name: string]: Block };
   blockOrder: Array<string>;
 
   constructor() {
@@ -12,8 +36,8 @@ export default class Script {
     this.blockOrder = [];
   }
 
-  checkValidity(): script.ValidationResponse {
-    const response: script.ValidationResponse = {
+  checkValidity(): ValidationResponse {
+    const response: ValidationResponse = {
       valid: true,
       errors: [],
     };
@@ -45,7 +69,7 @@ export default class Script {
       throw new Error(`block name ${name} already defined`);
     }
 
-    const block: script.Block = {
+    const block: Block = {
       name: name,
       data: command.data,
       transitions: [],
@@ -66,7 +90,7 @@ export default class Script {
 
       if (block.transitions.length == 0) {
         if (i == this.blockOrder.length - 1) {
-          const endTransition: script.Transition = {
+          const endTransition: Transition = {
             text: "The End",
             visible: true,
             targetType: "end",
@@ -74,7 +98,7 @@ export default class Script {
           block.transitions.push(endTransition);
         } else {
           const nextBlockName = this.blockOrder[i + 1];
-          const nextTransition: script.Transition = {
+          const nextTransition: Transition = {
             text: nextBlockName,
             visible: true,
             targetType: "block",
@@ -86,7 +110,7 @@ export default class Script {
     }
   }
 
-  getStartingBlock(): script.Block {
+  getStartingBlock(): Block {
     if (this.startingBlock == null) {
       throw new Error("no starting block defined.");
     }
@@ -94,7 +118,7 @@ export default class Script {
     return this.blocks[this.startingBlock];
   }
 
-  getBlock(name: string): script.Block {
+  getBlock(name: string): Block {
     return this.blocks[name];
   }
 }

@@ -6,6 +6,8 @@ strandweaver-machine:
 			- get the start and end of a block @done
 			- change scriptbuilder to script @done
 			- add quick validation @done
+			- figure out where to put classes in interface files
+			- figure out 
 			- fix quick fix stuff
 			- handle a single block properly
 	Ideas:
