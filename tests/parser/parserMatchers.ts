@@ -3,14 +3,9 @@ import Script, {
   ValidationError,
 } from "@App/script/Script";
 
-interface ExtendedMatchers extends jest.Matchers<void> {
-  toBeAValidScript(): void;
-  toMatchScriptError(pattern: RegExp): void;
-}
-
 expect.extend({
   toBeAValidScript(received: Script) {
-    const response = received.checkValidity();
+    const response = received.validator.check();
     const errorMessages = response.errors.map((err: ValidationError) => {
       `${err.type}: ${err.message}`;
     });
@@ -33,7 +28,7 @@ expect.extend({
     }
   },
   toMatchScriptError(received: Script, pattern: RegExp) {
-    const response: ValidationResponse = received.checkValidity();
+    const response: ValidationResponse = received.validator.check();
     const errorMessages = response.errors.map((err: ValidationError) => {
       return `${err.type}: ${err.message}`;
     });

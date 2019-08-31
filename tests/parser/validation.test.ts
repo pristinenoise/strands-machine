@@ -1,5 +1,4 @@
 import TextParser from "@App/parsers/TextParser";
-import Script from "@App/script/Script";
 
 describe("given an empty script", () => {
   const text = `

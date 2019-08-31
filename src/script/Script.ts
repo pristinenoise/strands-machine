@@ -1,4 +1,6 @@
 import { Command } from "@App/parsers/TextParser";
+import Validator from "./Validator";
+import { ValidationResponse } from "dist/script/Script";
 
 export interface Block {
   name: string;
@@ -11,6 +13,10 @@ export interface Transition {
   visible: boolean;
   targetType: string;
   targetName?: string;
+}
+
+export interface ValidatesBehavior {
+  check(): ValidationResponse;
 }
 
 export interface ValidationResponse {
@@ -26,30 +32,17 @@ export interface ValidationError {
 }
 
 export default class Script {
+  validator: ValidatesBehavior;
+
   startingBlock: string | null;
   blocks: { [name: string]: Block };
   blockOrder: Array<string>;
 
   constructor() {
     this.startingBlock = null;
+    this.validator = new Validator(this);
     this.blocks = {};
     this.blockOrder = [];
-  }
-
-  checkValidity(): ValidationResponse {
-    const response: ValidationResponse = {
-      valid: true,
-      errors: [],
-    };
-
-    if (this.blockOrder.length == 0) {
-      response.valid = false;
-      response.errors.push({
-        type: "NoBlocksFound",
-        message: "A script must have at least one block.",
-      });
-    }
-    return response;
   }
 
   addCommand(command: Command): void {

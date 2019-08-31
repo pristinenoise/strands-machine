@@ -1,5 +1,4 @@
 import TextParser from "@App/parsers/TextParser";
-import * as script from "@App/script/script";
 
 describe("given a one block script", () => {
   const text = `

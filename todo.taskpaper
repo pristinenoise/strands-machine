@@ -1,15 +1,16 @@
 Inbox:
 strandweaver-machine:
 	New Features:
-		Set up basic parsing and text features:
+		Set up basic parsing and text features: @done
 			- move away from typescript @started(19-08-24 20:08) @done
 			- get the start and end of a block @done
 			- change scriptbuilder to script @done
 			- add quick validation @done
-			- figure out where to put classes in interface files
-			- figure out 
-			- fix quick fix stuff
-			- handle a single block properly
+			- figure out where to put classes in interface files @done
+			- move validation to an external class @done
+			- figure out @done
+			- fix quick fix stuff @done
+			- handle a single block properly @done
 	Ideas:
 	Bugs:
 Archive:
