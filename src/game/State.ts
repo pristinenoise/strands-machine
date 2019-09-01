@@ -24,6 +24,10 @@ export default class State {
     return this._state.globals[key];
   }
 
+  setGlobal(key: string, value: string | number): void {
+    this._state.globals[key] = value;
+  }
+
   getPathVar(pathKey: string, key: string): string | number | undefined {
     const path: KeyHash | null = this._state.paths[pathKey];
 
@@ -32,6 +36,17 @@ export default class State {
     }
 
     return path[key];
+  }
+
+  setPathVar(pathKey: string, key: string, value: string | number): void {
+    const path: KeyHash | null = this._state.paths[pathKey];
+
+    // TODO: we should figure out what setpathvar does for a non-existent path
+    if (path == undefined) {
+      return;
+    }
+
+    path[key] = value;
   }
 
   private defaultState(): StateHash {
