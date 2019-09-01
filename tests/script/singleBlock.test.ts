@@ -1,4 +1,4 @@
-import TextParser from "@App/parsers/TextParser";
+import Script from "@App/script/Script";
 
 describe("given a one block script", () => {
   const text = `
@@ -8,7 +8,7 @@ describe("given a one block script", () => {
     beep boop
   `;
 
-  const parser: TextParser = new TextParser(text);
+  const parser: Script = new Script(text);
 
   it("parses into a single block command", () => {
     expect(parser.commands.length).toBe(1);
@@ -20,7 +20,7 @@ describe("given a one block script", () => {
   });
 
   describe("the first block", () => {
-    const sb = parser.script;
+    const sb = parser.engine;
     const robotBlock = sb.getBlock("robot");
 
     it("parses correctly", () => {
@@ -35,7 +35,7 @@ describe("given a one block script", () => {
   });
 
   it("adds a default transition to the end", () => {
-    const sb = parser.script;
+    const sb = parser.engine;
     const robotBlock = sb.getBlock("robot");
 
     expect(robotBlock.transitions.length).toBe(1);

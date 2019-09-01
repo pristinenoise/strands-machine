@@ -1,10 +1,10 @@
-import Script, { ValidatesBehavior, ValidationResponse } from "./script";
+import Engine, { ValidatesBehavior, ValidationResponse } from "./Engine";
 
 export default class Validator implements ValidatesBehavior {
-  private _script: Script;
+  private _engine: Engine;
 
-  constructor(script: Script) {
-    this._script = script;
+  constructor(engine: Engine) {
+    this._engine = engine;
   }
 
   check(): ValidationResponse {
@@ -13,7 +13,7 @@ export default class Validator implements ValidatesBehavior {
       errors: [],
     };
 
-    if (this._script.blockOrder.length == 0) {
+    if (this._engine.blockOrder.length == 0) {
       response.valid = false;
       response.errors.push({
         type: "NoBlocksFound",

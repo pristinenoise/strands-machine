@@ -11,6 +11,12 @@ strandweaver-machine:
 			- figure out @done
 			- fix quick fix stuff @done
 			- handle a single block properly @done
+		Handle a basic game:
+			- rename to engine / script / game @done
+			- build in a state object to game
+			- build signals
+			- build a start the game signal, with error checking
+			- build a end the game signal
 	Ideas:
 	Bugs:
 Archive:

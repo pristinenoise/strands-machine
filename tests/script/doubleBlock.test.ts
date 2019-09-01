@@ -1,4 +1,4 @@
-import TextParser from "@App/parsers/TextParser";
+import Script from "@App/script/Script";
 
 describe("a multi block script", () => {
   const text = `
@@ -10,8 +10,8 @@ describe("a multi block script", () => {
 
     i am human
   `;
-  const parser: TextParser = new TextParser(text);
-  const sb = parser.script;
+  const parser: Script = new Script(text);
+  const sb = parser.engine;
 
   it("parses into 2 commands", () => {
     expect(parser.commands.length).toBe(2);

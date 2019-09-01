@@ -1,117 +1,105 @@
-import { Command } from "@App/parsers/TextParser";
-import Validator from "./Validator";
-import { ValidationResponse } from "dist/script/Script";
+import Engine from "../engine/Engine";
+import {
+  CommandHeader,
+  isCommandHeader,
+  parseCommandHeader,
+} from "./parseCommandHeader";
 
-export interface Block {
-  name: string;
-  data: string;
-  transitions: Array<Transition>;
-}
-
-export interface Transition {
-  text: string;
-  visible: boolean;
-  targetType: string;
-  targetName?: string;
-}
-
-export interface ValidatesBehavior {
-  check(): ValidationResponse;
-}
-
-export interface ValidationResponse {
-  valid: boolean;
-  errors: Array<ValidationError>;
-}
-
-export interface ValidationError {
+export interface Command {
   type: string;
-  message: string;
-  startLine?: number;
-  endLine?: number;
+  params: { [name: string]: string };
+  startLine: number;
+  endLine: number;
+  data: string;
 }
+
+const commentRe = /^\s*\/\//;
 
 export default class Script {
-  validator: ValidatesBehavior;
+  static readonly commentRegex = /^\/\//;
 
-  startingBlock: string | null;
-  blocks: { [name: string]: Block };
-  blockOrder: Array<string>;
+  engine: Engine;
+  private _lines: Array<string>;
+  private _numberLines: number;
+  commands: Array<Command>;
 
-  constructor() {
-    this.startingBlock = null;
-    this.validator = new Validator(this);
-    this.blocks = {};
-    this.blockOrder = [];
+  constructor(rawInput: string) {
+    this._lines = rawInput.match(/[^\r\n]+/g) || [];
+    this._numberLines = this._lines.length;
+    this.engine = new Engine();
+    this.commands = [];
+    this.parseIntoCommands();
+    this.makeEngine();
   }
 
-  addCommand(command: Command): void {
-    if (command.type == "block") {
-      this.addBlock(command);
-    } else {
-      throw new Error(`unknown block type ${command.type} found`);
-    }
+  private makeEngine(): void {
+    this.commands.forEach(command => {
+      this.engine.addCommand(command);
+    });
+    this.engine.wireDefaultTransitions();
   }
 
-  private addBlock(command: Command): void {
-    const name: string =
-      command.params["name"] || `unnamed_block_${this.blockOrder.length}`;
+  private parseIntoCommands(): void {
+    let activeLine = 0;
+    do {
+      const command: Command | null = this.parseNextCommand(activeLine);
+      if (command == null) {
+        break;
+      }
 
-    // check if block name taken
-    if (this.blocks[name]) {
-      throw new Error(`block name ${name} already defined`);
-    }
+      this.commands.push(command);
 
-    const block: Block = {
-      name: name,
-      data: command.data,
-      transitions: [],
+      activeLine = command.endLine + 1;
+    } while (activeLine < this._numberLines);
+  }
+
+  private parseNextCommand(earliestLine: number): Command | null {
+    const command: Command = {
+      type: "unknown",
+      params: {},
+      startLine: earliestLine,
+      endLine: this._numberLines - 1,
+      data: "",
     };
 
-    this.blocks[name] = block;
-    this.blockOrder.push(name);
+    let commandFound = false;
 
-    if (this.startingBlock == null) {
-      this.startingBlock = name;
-    }
-  }
+    // find start
+    for (let i = earliestLine; i < this._numberLines; i++) {
+      const line = this._lines[i];
+      if (isCommandHeader(line)) {
+        command.startLine = i;
+        commandFound = true;
+        const header: CommandHeader = parseCommandHeader(line);
 
-  wireDefaultTransitions(): void {
-    for (let i = 0; i < this.blockOrder.length; i++) {
-      const name = this.blockOrder[i];
-      const block = this.blocks[name];
+        command.type = header.type;
+        command.params = header.params;
 
-      if (block.transitions.length == 0) {
-        if (i == this.blockOrder.length - 1) {
-          const endTransition: Transition = {
-            text: "The End",
-            visible: true,
-            targetType: "end",
-          };
-          block.transitions.push(endTransition);
-        } else {
-          const nextBlockName = this.blockOrder[i + 1];
-          const nextTransition: Transition = {
-            text: nextBlockName,
-            visible: true,
-            targetType: "block",
-            targetName: nextBlockName,
-          };
-          block.transitions.push(nextTransition);
-        }
+        break;
       }
     }
-  }
 
-  getStartingBlock(): Block {
-    if (this.startingBlock == null) {
-      throw new Error("no starting block defined.");
+    if (!commandFound) {
+      return null;
     }
 
-    return this.blocks[this.startingBlock];
+    const lines: Array<string> = [];
+    for (let i = command.startLine + 1; i < this._numberLines; i++) {
+      const line = this._lines[i];
+      if (isCommandHeader(line)) {
+        command.endLine = i - 1;
+        break;
+      } else if (!this.isComment(line)) {
+        lines.push(line);
+      }
+    }
+
+    command.data = lines.join("\n");
+
+    return command;
   }
 
-  getBlock(name: string): Block {
-    return this.blocks[name];
+  private isComment(line: string): boolean {
+    return commentRe.test(line);
   }
 }

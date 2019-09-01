@@ -1,10 +1,10 @@
-import Script, {
+import Engine, {
   ValidationResponse,
   ValidationError,
-} from "@App/script/Script";
+} from "@App/engine/Engine";
 
 expect.extend({
-  toBeAValidScript(received: Script) {
+  toBeAValidScript(received: Engine) {
     const response = received.validator.check();
     const errorMessages = response.errors.map((err: ValidationError) => {
       `${err.type}: ${err.message}`;
@@ -27,7 +27,7 @@ expect.extend({
       };
     }
   },
-  toMatchScriptError(received: Script, pattern: RegExp) {
+  toMatchScriptError(received: Engine, pattern: RegExp) {
     const response: ValidationResponse = received.validator.check();
     const errorMessages = response.errors.map((err: ValidationError) => {
       return `${err.type}: ${err.message}`;

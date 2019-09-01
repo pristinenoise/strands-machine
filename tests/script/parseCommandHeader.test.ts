@@ -2,7 +2,7 @@ import {
   CommandHeader,
   isCommandHeader,
   parseCommandHeader,
-} from "@App/parsers/parseCommandHeader";
+} from "@App/script/parseCommandHeader";
 
 test("it can test for whether a line of text is the command header", () => {
   const line = "% block name='xxx' id='abc'";

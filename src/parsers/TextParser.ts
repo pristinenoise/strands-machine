@@ -1,4 +1,4 @@
-import Script from "../script/Script";
+import Engine from "../engine/Engine";
 import {
   CommandHeader,
   isCommandHeader,
@@ -18,7 +18,7 @@ const commentRe = /^\s*\/\//;
 export default class TextParser {
   static readonly commentRegex = /^\/\//;
 
-  script: Script;
+  script: Engine;
   private _lines: Array<string>;
   private _numberLines: number;
   commands: Array<Command>;
@@ -26,7 +26,7 @@ export default class TextParser {
   constructor(rawInput: string) {
     this._lines = rawInput.match(/[^\r\n]+/g) || [];
     this._numberLines = this._lines.length;
-    this.script = new Script();
+    this.script = new Engine();
     this.commands = [];
     this.parseIntoCommands();
     this.makeScript();
