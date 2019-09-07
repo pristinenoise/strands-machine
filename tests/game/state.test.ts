@@ -7,7 +7,10 @@ describe("given a state", () => {
     },
     paths: {
       traveller: {
-        health: 3,
+        locations: {},
+        variables: {
+          health: 3,
+        },
       },
     },
   };

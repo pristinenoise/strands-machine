@@ -1,14 +1,20 @@
 export interface KeyHash {
   [index: string]: string | number;
 }
+export interface PathState {
+  locations: KeyHash;
+  variables: KeyHash;
+}
+
 export interface PathHash {
-  [pathName: string]: KeyHash;
+  [index: string]: PathState;
 }
 
 export interface StateHash {
   globals: KeyHash;
   paths: PathHash;
 }
+
 export default class State {
   private _state: StateHash;
 
@@ -28,25 +34,25 @@ export default class State {
     this._state.globals[key] = value;
   }
 
-  getPathVar(pathKey: string, key: string): string | number | undefined {
-    const path: KeyHash | null = this._state.paths[pathKey];
+  getPathVar(pathName: string, key: string): string | number | undefined {
+    const path: PathState | null = this._state.paths[pathName];
 
     if (path == undefined) {
       return undefined;
     }
 
-    return path[key];
+    return path.variables[key];
   }
 
   setPathVar(pathKey: string, key: string, value: string | number): void {
-    const path: KeyHash | null = this._state.paths[pathKey];
+    const path: PathState | null = this._state.paths[pathKey];
 
     // TODO: we should figure out what setpathvar does for a non-existent path
     if (path == undefined) {
       return;
     }
 
-    path[key] = value;
+    path.variables[key] = value;
   }
 
   private defaultState(): StateHash {
